@@ -82,10 +82,10 @@ Submit PR to main repository
 
 👥 Team Members
 
-1. Tusshar Singh @Tusshar-web
+1. Tusshar Singh [@Tusshar-web](https://github.com/Tusshar-web/)
 2. Mahi Sharma
 3. Gagan Upadhyaya
-4. Bornil Gogoi @born1l
+4. Bornil Gogoi [@born1l](https://github.com/born1l/)
 5. Snehasish Das
 
 ## 🌍 Future Scope
