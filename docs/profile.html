@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+     <nav class="top-nav">
+  <div class="logo">FurEver Safe 🐾</div>
+  <ul class="nav-links">
+    <li class="active"><a href="home.html">Home</a></li>
+    <li><a href="report.html">Report</a></li>
+    <li><a href="track.html">Track</a></li>
+    <li><a href="profile.html">Profile</a></li>
+    <!-- <li><a href="#">Logout</a></li> -->
+  </ul>
+</nav>
+<div class="profile-container">
+  <h2>My Profile</h2>
+
+  <!-- DISPLAY MODE -->
+  <div id="profileDisplay" class="profile-display">
+    <img id="displayImage" src="default.png" alt="Profile Picture">
+    <p><strong>Name:</strong> <span id="displayName"></span></p>
+    <p><strong>Email:</strong> <span id="displayEmail"></span></p>
+    <p><strong>Phone:</strong> <span id="displayPhone"></span></p>
+    <p><strong>Address:</strong> <span id="displayAddress"></span></p>
+
+    <button id="editProfileBtn">Edit Profile</button>
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+  </div>
+
+  <!-- EDIT MODE -->
+  <form id="profileForm" style="display:none;">
+    <input type="file" id="profilePicInput" accept="image/*">
+
+    <label>Name</label>
+    <input type="text" id="name" required>
+
+    <label>Email</label>
+    <input type="email" id="email" required>
+
+    <label>Phone</label>
+    <input type="text" id="phone">
+
+    <label>Address</label>
+    <textarea id="address"></textarea>
+
+    <button type="submit">Save Changes</button>
+  </form>
+</div>
+
+<!-- Logout Modal -->
+<div class="logout-modal" id="logoutModal">
+  <div class="logout-box">
+    <h3>Are you sure you want to logout?</h3>
+    <div class="logout-actions">
+      <button id="cancelLogout">No</button>
+      <button id="confirmLogout">Yes</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/profile.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</body>
+</html>

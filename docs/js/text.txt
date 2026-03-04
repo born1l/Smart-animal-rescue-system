@@ -1,0 +1,234 @@
+const tabs = document.querySelectorAll('.nav-links li');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+
+    // Remove active from all tabs
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    // Show the selected tab content
+    const target = tab.dataset.tab;
+    contents.forEach(c => c.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+  });
+});
+
+// SOS button redirects to Reports tab
+const sosBtn = document.getElementById('sosBtn');
+
+sosBtn.addEventListener('click', () => {
+  // Remove active class from all nav links
+  const tabs = document.querySelectorAll('.nav-links li');
+  tabs.forEach(t => t.classList.remove('active'));
+
+  // Add active to Report tab
+  const reportTab = document.querySelector('.nav-links li[data-tab="report"]');
+  reportTab.classList.add('active');
+
+  // Remove active from all tab contents
+  const contents = document.querySelectorAll('.tab-content');
+  contents.forEach(c => c.classList.remove('active'));
+
+  // Show Report section
+  document.getElementById('report').classList.add('active');
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Initialize map
+  const map = L.map('map').setView([26.1445, 91.7362], 13); // default fallback
+
+  // OpenStreetMap tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Geolocation
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(position => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      map.setView([lat, lng], 14);
+      L.marker([lat, lng]).addTo(map).bindPopup("You are here").openPopup();
+
+      // Mock nearby places
+      const places = [
+        { name: "Happy Paws Clinic", lat: lat + 0.01, lng: lng + 0.01 },
+        { name: "Animal Rescue Center", lat: lat - 0.01, lng: lng - 0.01 },
+        { name: "Vet Care Hospital", lat: lat + 0.015, lng: lng - 0.005 }
+      ];
+
+      places.forEach(place => {
+        L.marker([place.lat, place.lng]).addTo(map).bindPopup(place.name);
+      });
+    }, () => {
+      alert("Geolocation failed. Showing default location.");
+    });
+  } else {
+    alert("Geolocation not supported by your browser.");
+  }
+});
+
+const quoteTextElem = document.getElementById("quote-text");
+
+async function fetchQuote() {
+  try {
+    const response = await fetch("https://api.quotable.io/random");
+    const data = await response.json();
+    quoteTextElem.textContent = `"${data.content}" — ${data.author}`;
+  } catch (err) {
+    quoteTextElem.textContent = "Stay pawsitive and help animals today! 🐾";
+    console.error("Quote API error:", err);
+  }
+}
+
+// Fetch on load
+fetchQuote();
+
+// report.js
+document.addEventListener("DOMContentLoaded", () => {
+  const reportForm = document.getElementById('reportForm');
+  const reportList = document.getElementById('reportList');
+  const getLocationBtn = document.getElementById('getLocation');
+  const locationInput = document.getElementById('location');
+  const takePhotoBtn = document.getElementById('takePhoto');
+  const photoInput = document.getElementById('photo');
+
+  // --- Geolocation ---
+  getLocationBtn.addEventListener('click', () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude.toFixed(6);
+          const lng = position.coords.longitude.toFixed(6);
+          locationInput.value = `${lat}, ${lng}`;
+        },
+        () => alert("Could not get your location. Please enter manually.")
+      );
+    } else {
+      alert("Geolocation not supported by your browser.");
+    }
+  });
+
+  // --- Camera button ---
+  takePhotoBtn.addEventListener('click', () => {
+    photoInput.click();
+  });
+
+  // --- Function to add row to table ---
+  function addReportRow(report) {
+    const row = document.createElement('tr');
+
+    // Highlight high urgency reports
+    if (report.urgency === "high") {
+      row.style.backgroundColor = "#ffcccc";
+    }
+
+    row.innerHTML = `
+      <td>${report.animal}</td>
+      <td>${report.location}</td>
+      <td>${report.description}</td>
+      <td>${report.urgency}</td>
+      <td>${report.status}</td>
+      <td>${report.photoURL ? `<img src="${report.photoURL}" width="80" style="border-radius:6px;">` : "No Photo"}</td>
+    `;
+    reportList.appendChild(row);
+  }
+
+  // --- Load reports from localStorage ---
+  const storedReports = JSON.parse(localStorage.getItem('reports')) || [];
+  storedReports.forEach(report => addReportRow(report));
+
+  // --- Submit form ---
+  reportForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const animal = document.getElementById('animalType').value;
+    const location = locationInput.value;
+    const description = document.getElementById('description').value;
+    const urgency = document.getElementById('urgency').value;
+    const photoFile = photoInput.files[0];
+
+    // Convert file to URL for preview
+    const photoURL = photoFile ? URL.createObjectURL(photoFile) : "";
+
+    // Create report object
+    const report = {
+      animal,
+      location,
+      description,
+      urgency,
+      status: "Pending",
+      photoURL
+    };
+
+    // Save to localStorage
+    let reports = JSON.parse(localStorage.getItem('reports')) || [];
+    reports.push(report);
+    localStorage.setItem('reports', JSON.stringify(reports));
+
+    // Add row to table
+    addReportRow(report);
+
+    // Reset form
+    reportForm.reset();
+  });
+});
+
+// Load Navbar
+fetch('components/navbar.html')
+  .then(res => res.text())
+  .then(html => document.getElementById('navbar').innerHTML = html);
+
+// Function to load a page
+function loadPage(page) {
+  fetch(`${page}.html`)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('content').innerHTML = html;
+
+      // Optional: re-initialize JS for specific pages
+      if (page === 'home' || page === 'track') {
+        if (typeof initMap === 'function') initMap(); // Leaflet map
+      }
+      if (page === 'report') {
+        if (typeof initReportForm === 'function') initReportForm(); // Report form JS
+      }
+    });
+}
+
+// Load default page
+loadPage('home');
+
+// Navbar click handling
+document.addEventListener('click', e => {
+  if (e.target.matches('.nav-links li')) {
+    const page = e.target.dataset.page;
+    document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
+    e.target.classList.add('active');
+
+    if(page === 'logout') {
+      // handle logout
+      alert('Logging out...');
+    } else {
+      loadPage(page);
+    }
+  }
+});
+
+function loadPage(page) {
+  fetch(`${page}.html`)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('content').innerHTML = html;
+
+      // Initialize page-specific JS
+      if (page === 'report') {
+        if (typeof initReportForm === 'function') initReportForm();
+      }
+      if (page === 'home') {
+        if (typeof initMap === 'function') initMap();
+      }
+    });
+}
