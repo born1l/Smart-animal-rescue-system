@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+   <nav class="top-nav">
+  <div class="logo">FurEver Safe 🐾</div>
+  <ul class="nav-links">
+    <li class="active"><a href="home.html">Home</a></li>
+    <li><a href="report.html">Report</a></li>
+    <li><a href="track.html">Track</a></li>
+    <li><a href="profile.html">Profile</a></li>
+    <!-- <li><a href="#">Logout</a></li> -->
+  </ul>
+</nav>
+<!-- Daily Quote Section  -->
+  <div id="daily-quote">
+  <p id="quote-text">Loading quote...</p>
+</div>
+
+  <section id="home" class="tab-content active">
+     <div class="welcome-text">
+  <h2>Welcome, User!</h2>
+  <p><b>Here’s a quick overview of your dashboard:</b></p>
+      </div>
+  <!-- Dashboard stats cards -->
+  <div class="dashboard-cards">
+    <div class="card">
+      <h3>Animals Rescued</h3>
+      <p>0</p>
+    </div>
+    <div class="card">
+      <h3>Active Reports</h3>
+      <p>0</p>
+    </div>
+    <div class="card">
+      <h3>Tracking Requests</h3>
+      <p>0</p>
+    </div>
+  </div>
+
+  <!-- Emergency SOS Button -->
+  <button id="sosBtn">🆘 Emergency SOS</button>
+  <p class="sos-text">Save a life now 🐾</p>
+  <br>
+
+<div class="map-text welcome-text"><B>Find the nearest clinics near you</B></div>
+  <div id="map"></div>
+
+  <!-- Optional welcome graphic or message -->
+  <div class="welcome-banner">
+     <!-- <img src="https://th.bing.com/th?id=OIF.h7LR30g%2bCdBWfBrKWojw2g&w=306&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" alt="Cute bear cub" class="home-img"> -->
+    <p>🐾 Keep helping animals and making a difference!</p>
+  </div>
+  </nav>
+</section>
+
+  <script src="js/user-dashboard.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</body>
+</html>

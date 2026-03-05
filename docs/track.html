@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track</title>
+        <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <nav class="top-nav">
+  <div class="logo">FurEver Safe 🐾</div>
+  <ul class="nav-links">
+    <li class="active"><a href="home.html">Home</a></li>
+    <li><a href="report.html">Report</a></li>
+    <li><a href="track.html">Track</a></li>
+    <li><a href="profile.html">Profile</a></li>
+    <!-- <li><a href="#">Logout</a></li> -->
+  </ul>
+</nav>
+
+    <div class="track-container">
+  <h2>Track Your Request</h2>
+  <div id="trackStatus"></div>
+</div>
+
+<div id="chatBox" style="display:none;">
+  <div id="messages"></div>
+  <input type="text" id="chatInput">
+  <button onclick="sendMessage()">Send</button>
+</div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/track.js"></script>
+</body>
+</html>
