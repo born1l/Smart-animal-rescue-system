@@ -27,17 +27,19 @@ To build a smart, scalable rescue response system that:
 
 ## 🛠️ Tech Stack
 
-> (In discussion)
+* Frontend: HTML5, CSS3, JavaScript
 
-Frontend: 
+* Maps & Location: Leaflet.js, OpenStreetMap API, Geolocation API
 
-Backend: 
+* AI Image Detection: TensorFlow.js, MobileNet Model
 
-Database: 
+* Backend: Node.js, Express.js
 
-Hosting: 
+* Database: MongoDB / MongoDB Atlas
 
-Version Control: Git & GitHub
+* Storage (Prototype): LocalStorage
+
+* Tools & Development: Git, GitHub, VS Code, NPM
 
 ## 📌 Core Features
 
