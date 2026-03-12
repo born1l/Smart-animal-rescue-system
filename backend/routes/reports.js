@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Report = require("../backend/models/Report");
+const Report = require("../models/Report");
 const authMiddleware = require("../middleware/auth");
 
 // POST — submit a new report
