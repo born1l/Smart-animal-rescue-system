@@ -8,10 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   roleButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-
       roleButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-
       selectedRole = btn.dataset.role;
       showFields(selectedRole);
     });
@@ -36,28 +34,42 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  loginForm.addEventListener("submit", function (e) {
+  loginForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    localStorage.setItem("loggedIn", "true");
-    localStorage.setItem("role", selectedRole);
+    const email = document.getElementById("email")?.value;
+    const password = document.getElementById("password")?.value;
 
-    if (selectedRole === "user") {
-      window.location.href = "home.html";
+    if (!email || !password) {
+      alert("Please enter email and password");
+      return;
     }
 
-    if (selectedRole === "volunteer") {
-      window.location.href = "volunteer.html";
-    }
+    try {
+      const res = await fetch("http://localhost:5005/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, role: selectedRole })
+      });
 
-    if (selectedRole === "admin") {
-      window.location.href = "admin.html";
+      const data = await res.json();
+      if (!res.ok) return alert(data.error);
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      if (data.user.role === "admin") window.location.href = "admin.html";
+      else if (data.user.role === "volunteer") window.location.href = "volunteer.html";
+      else window.location.href = "home.html";
+
+    } catch (err) {
+      alert("Server error. Is the backend running?");
     }
   });
 
 });
 
 // Backend test
-fetch("http://localhost:5000/")
-.then(res => res.text())
-.then(data => console.log(data));
+fetch("http://localhost:5005/")
+  .then(res => res.text())
+  .then(data => console.log(data));
