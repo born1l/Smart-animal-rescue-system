@@ -6,6 +6,8 @@ const animalRoutes = require("./routes/animals");
 
 const app = express();
 const PORT = process.env.PORT || 5005;
+const authRoutes = require("./routes/auth");
+app.use("/api/auth", authRoutes);
 
 // Connect to MongoDB
 connectDB();
