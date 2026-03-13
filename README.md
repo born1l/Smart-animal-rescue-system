@@ -27,7 +27,7 @@ To build a smart, scalable rescue response system that:
 
 ## 🛠️ Tech Stack
 
-* Frontend: HTML5, CSS3, JavaScript
+* Frontend: HTML, CSS3, JavaScript
 
 * Maps & Location: Leaflet.js, OpenStreetMap API, Geolocation API
 
