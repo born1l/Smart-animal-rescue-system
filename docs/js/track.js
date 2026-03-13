@@ -1,21 +1,28 @@
 // ============================
 // LOAD REPORT FROM LOCALSTORAGE
 // ============================
-const reports = JSON.parse(localStorage.getItem("reports")) || [];
-const report = reports.length ? reports[reports.length - 1] : null;
+const BASE_URL = "http://localhost:5005";
+const token = localStorage.getItem("token");
+if (!token) window.location.href = "login.html";
+let report = null;
+async function fetchLatestReport() {
+  try {
+    const res = await fetch(`${BASE_URL}/api/reports/mine`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const reports = await res.json();
+    report = reports.length ? reports[reports.length - 1] : null;
+  } catch {
+    report = null;
+  }
+  render();
+}
 
 const statusBanner   = document.getElementById("statusBanner");
 const noReportState  = document.getElementById("noReportState");
 const pendingState   = document.getElementById("pendingState");
 const rejectedState  = document.getElementById("rejectedState");
 const acceptedState  = document.getElementById("acceptedState");
-
-// Auto-transition: mark as Accepted after 15 seconds
-if (report && report.status === "Submitted" && Date.now() - report.time > 15000) {
-  report.status = "Accepted";
-  report.volunteer = { name: "Rahul Sharma", phone: "+91 98765 43210" };
-  localStorage.setItem("reports", JSON.stringify(reports));
-}
 
 // ============================
 // RENDER CORRECT STATE
@@ -242,4 +249,4 @@ function initChat() {
 // ============================
 // KICK OFF
 // ============================
-render();
+fetchLatestReport();
