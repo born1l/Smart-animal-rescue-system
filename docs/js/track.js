@@ -34,7 +34,7 @@ function render() {
     return;
   }
 
-  if (report.status === "Submitted") {
+  if (report.status === "open") {
     showBanner("pending");
     pendingState.style.display = "block";
 
